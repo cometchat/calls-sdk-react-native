@@ -106,5 +106,5 @@ export declare class CometChatCalls {
      * @returns A Promise that resolves to a CallLog object containing the call details.
      * @throws {CometChatCallsException} If there is an error retrieving the call details.
      */
-    static getCallDetails(sessionID: string, authToken: string): Promise<CallLog>;
+    static getCallDetails(sessionID: string, authToken: string): Promise<Array<CallLog>>;
 }

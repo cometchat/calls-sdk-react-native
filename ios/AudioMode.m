@@ -245,6 +245,21 @@ RCT_EXPORT_METHOD(updateDeviceList) {
     [self notifyDevicesChanged];
 }
 
+RCT_EXPORT_METHOD(releaseAudioSession)
+{
+    RTCAudioSession *session = [RTCAudioSession sharedInstance];
+    [session lockForConfiguration];
+    NSError *error = nil;
+    [session setActive:NO error:&error];
+    [session unlockForConfiguration];
+
+    if (error) {
+        NSLog(@"Failed to release audio session: %@", error.localizedDescription);
+    } else {
+        NSLog(@"Audio session released successfully");
+    }
+}
+
 RCT_EXPORT_METHOD(removeListener) {
     RTCAudioSession *session = [RTCAudioSession sharedInstance];
     [session removeDelegate:self];

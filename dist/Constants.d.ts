@@ -12,6 +12,9 @@ export declare const REGION: {
     readonly us: "us";
     readonly eu: "eu";
     readonly in: "in";
+    readonly US: "us";
+    readonly EU: "eu";
+    readonly IN: "in";
 };
 export declare const DEFAULT_VALUES: {
     ZERO: number;
