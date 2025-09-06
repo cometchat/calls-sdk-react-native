@@ -8,6 +8,10 @@ import { OngoingCallListener } from './Listner';
 import { PresenterSettings, PresenterSettingsBuilder } from './PresenterSettings';
 import { CallLog } from './CallLog';
 import { CallLogRequestBuilder } from './CometChatCallLogs';
+import { CallUser } from "./CallUser";
+import { CallGroup } from "./CallGroup";
+import { Participant } from './Participant';
+import { Recording } from './Recording';
 export declare class CometChatCalls {
     private static appSettings;
     private static inProgress;
@@ -34,6 +38,10 @@ export declare class CometChatCalls {
     static PresenterComponent: typeof CometChatPresenterComponent;
     static CallLogRequestBuilder: typeof CallLogRequestBuilder;
     static CallLog: typeof CallLog;
+    static CallUser: typeof CallUser;
+    static CallGroup: typeof CallGroup;
+    static Participant: typeof Participant;
+    static Recording: typeof Recording;
     static generateToken(sessionID: string, authToken: string): Promise<{
         token: string;
     }>;
