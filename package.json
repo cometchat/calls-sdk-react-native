@@ -1,0 +1,122 @@
+{
+  "name": "@cometchat/calls-sdk-react-native",
+  "version": "4.0.3",
+  "description": "Cometchat React Native Calling component for iOS and Android",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "webpack --mode development",
+    "build": "webpack --mode production",
+    "test": "jest",
+    "typescript": "tsc --noEmit",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "release": "release-it",
+    "example": "yarn --cwd example",
+    "pods": "cd example && pod-install --quiet",
+    "bootstrap": "yarn example && yarn && yarn pods",
+    "buildold": "rm -rf package && tsc && cp src/calling.js package/calling.js"
+  },
+  "files": [
+    "android/src/main/",
+    "android/build.gradle",
+    "dist/",
+    "ios/",
+    "cometchat-calls-sdk-react-native.podspec"
+  ],
+  "keywords": [
+    "react-native",
+    "ios",
+    "android"
+  ],
+  "repository": "https://github.com/github_account/react-native-react-native-cometchat-rtc",
+  "author": "cometchat <engineering.pro@cometchat.com> (https://github.com/cometchat-pro)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/github_account/react-native-react-native-cometchat-rtc/issues"
+  },
+  "homepage": "https://github.com/github_account/react-native-react-native-cometchat-rtc#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.53",
+    "babel-loader": "^8.0.4",
+    "esbuild-loader": "^2.19.0",
+    "react": "^17.0.2",
+    "react-native": "^0.66.5",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.5",
+    "typescript-declaration-webpack-plugin": "^0.2.2",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "@react-native-async-storage/async-storage": "*",
+    "@react-native-community/netinfo": "*",
+    "react-native-background-timer": "*",
+    "react-native-callstats": "*",
+    "react-native-webrtc": "*"
+  },
+  "jest": {
+    "preset": "react-native",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules",
+      "<rootDir>/lib/"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@react-native-community",
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "quoteProps": "consistent",
+          "singleQuote": true,
+          "tabWidth": 2,
+          "trailingComma": "es5",
+          "useTabs": false
+        }
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ],
+  "prettier": {
+    "quoteProps": "consistent",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false
+  }
+}
