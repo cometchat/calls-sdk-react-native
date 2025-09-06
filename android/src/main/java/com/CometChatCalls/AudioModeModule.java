@@ -129,7 +129,7 @@ class AudioModeModule extends ReactContextBaseJavaModule {
 
         this.reactContext = reactContext;
         audioManager = (AudioManager) reactContext.getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        // audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
     }
 
     /**
