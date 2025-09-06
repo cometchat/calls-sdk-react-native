@@ -38,6 +38,7 @@ public class CometChatCallsPackage implements ReactPackage {
         modules.add(new AudioModeModule(reactContext));
         modules.add(new CallNotificationServiceModule(reactContext));
         modules.add(new PictureInPictureModule(reactContext));
+        modules.add(new CometChatCommonModule(reactContext));
         return modules;
     }
 

@@ -1,6 +1,7 @@
 
 package com.CometChatCalls;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothHeadset;
 import android.bluetooth.BluetoothProfile;
@@ -8,8 +9,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.core.app.ActivityCompat;
 
 /**
  * Helper class to detect and handle Bluetooth device changes.  It monitors
@@ -123,7 +128,11 @@ class BluetoothHeadsetMonitor {
         filter.addAction(AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED);
         filter.addAction(BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED);
 
-        context.registerReceiver(receiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
+        } else {
+            context.registerReceiver(receiver, filter);
+        }
     }
 
     /**
@@ -131,6 +140,10 @@ class BluetoothHeadsetMonitor {
      * {@link Listener} registered event.
      */
     private void updateDevices() {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            Log.w(TAG, "BLUETOOTH_CONNECT permission not granted. Unable to update Bluetooth devices.");
+            return;
+        }
         boolean headsetAvailable = (headset != null) && !headset.getConnectedDevices().isEmpty();
         listener.onBluetoothDeviceChange(headsetAvailable);
     }

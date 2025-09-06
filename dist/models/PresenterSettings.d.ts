@@ -32,6 +32,7 @@ export declare class PresenterSettings {
     private StartVideoMuted;
     private defaultAudioMode;
     private ShowRecordingButton;
+    private idleTimeoutPeriod;
     constructor(builder: PresenterSettingsBuilder);
     isAudioOnlyCall(): boolean;
     getIsPresenter(): boolean;
@@ -46,6 +47,7 @@ export declare class PresenterSettings {
     getStartWithVideoMuted(): boolean;
     getDefaultAudioMode(): string;
     isRecordingButtonEnabled(): boolean;
+    getIdleTimeoutPeriod(): number;
 }
 export declare class PresenterSettingsBuilder {
     /** @private */ defaultLayout: boolean;
@@ -61,6 +63,7 @@ export declare class PresenterSettingsBuilder {
     /** @private */ StartVideoMuted: boolean;
     /** @private */ defaultAudioMode: typeof CallConstants.AUDIO_MODE[keyof typeof CallConstants.AUDIO_MODE];
     /** @private */ ShowRecordingButton: boolean;
+    /** @private */ idleTimeoutPeriod: number;
     /**
      *
      * @param {boolean} defaultLayout
@@ -186,6 +189,17 @@ export declare class PresenterSettingsBuilder {
      * @returns
      */
     showRecordingButton(showRecordingButton?: boolean): this;
+    /**
+     *
+     * @param {number} idleTimeoutPeriod
+     * This method sets the idle timeout period for the call.
+     * If set and you are the only one in call, the call will end
+     * after the idle timeout period, giving you the option to
+     * extend the call 60 seconds before the call ends.
+     * Default value is 180 seconds.
+     * @returns
+     */
+    setIdleTimeoutPeriod(idleTimeoutPeriod: number): this;
     /**
      * This method will return an object of the CallSettings class.
      * @returns {PresenterSettings}

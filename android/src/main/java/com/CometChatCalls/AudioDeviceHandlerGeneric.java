@@ -53,7 +53,7 @@ class AudioDeviceHandlerGeneric implements
         @Override
         public void run() {
             Set<String> devices = new HashSet<>();
-            AudioDeviceInfo[] deviceInfos = audioManager.getDevices(AudioManager.GET_DEVICES_ALL);
+            AudioDeviceInfo[] deviceInfos = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
 
             for (AudioDeviceInfo info: deviceInfos) {
                 switch (info.getType()) {

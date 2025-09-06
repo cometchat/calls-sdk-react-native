@@ -44,6 +44,7 @@ export interface ICallEventsData {
         initiator: Partial<User>;
     };
     readonly onCallEnded: {};
+    readonly onSessionTimeout: () => void;
     readonly onUserMuted: {
         name: string;
         avatar: string;

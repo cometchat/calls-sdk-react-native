@@ -10,6 +10,7 @@ interface IOngoingCallListener {
     onUserMuted: (test: Partial<ICallEventsData["onUserMuted"]>) => void;
     onCallSwitchedToVideo: (data: Partial<ICallEventsData['onCallSwitchedToVideo']>) => void;
     onCallEnded: () => void;
+    onSessionTimeout: () => void;
     onCallEndButtonPressed: () => void;
     onAudioModesUpdated: (any: any) => void;
     onError: (error: CometChatCallsException) => void;
@@ -35,6 +36,10 @@ export declare class OngoingCallListener {
      * This event is triggered when the call is ended.
      */
     onCallEnded?: IOngoingCallListener["onCallEnded"];
+    /**
+     * This event is triggered when the call is ended due to session timeout.
+     */
+    onSessionTimeout?: IOngoingCallListener["onSessionTimeout"];
     /**
      * This event is triggered when end call button is pressed.
      */

@@ -35,6 +35,7 @@ export declare class CallSettings {
     private ShowSwitchToVideoCallButton;
     private AvatarMode;
     private ShowRecordingButton;
+    private idleTimeoutPeriod;
     private StartRecordingOnCallStart;
     private MainVideoContainerSetting;
     private EnableVideoTileClick;
@@ -55,6 +56,7 @@ export declare class CallSettings {
     isAudioToVideoButtonEnabled(): boolean;
     getAvatarMode(): string;
     isRecordingButtonEnabled(): boolean;
+    getIdleTimeoutPeriod(): number;
     shouldStartRecordingOnCallStart(): boolean;
     getMainVideoContainerSetting(): MainVideoContainerSetting;
     isVideoTileClickEnabled(): boolean;
@@ -77,6 +79,7 @@ export declare class CallSettingsBuilder {
     /** @private */ ShowSwitchToVideoCallButton: boolean;
     /** @private */ AvatarMode: string;
     /** @private */ ShowRecordingButton: boolean;
+    /** @private */ idleTimeoutPeriod: number;
     /** @private */ StartRecordingOnCallStart: boolean;
     /** @private */ MainVideoContainerSetting: MainVideoContainerSetting;
     /** @private */ EnableVideoTileClick: boolean;
@@ -223,6 +226,17 @@ export declare class CallSettingsBuilder {
      * @returns
      */
     showRecordingButton(showRecordingButton?: boolean): this;
+    /**
+     *
+     * @param {number} idleTimeoutPeriod
+     * This method sets the idle timeout period for the call.
+     * If set and you are the only one in call, the call will end
+     * after the idle timeout period, giving you the option to
+     * extend the call 60 seconds before the call ends.
+     * Default value is 180 seconds.
+     * @returns
+     */
+    setIdleTimeoutPeriod(idleTimeoutPeriod?: number): this;
     /**
      *
      * @param {boolean} startRecordingOnCallStart

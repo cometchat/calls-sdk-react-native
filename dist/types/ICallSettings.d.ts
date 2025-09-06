@@ -3,6 +3,7 @@ export interface ICallSettings {
     screenShareMode?: "default" | "presenter";
     ShowEndCallButton?: boolean;
     ShowRecordingButton?: boolean;
+    idleTimeoutPeriod?: number;
     StartRecordingOnCallStart?: boolean;
     ShowMuteAudioButton?: boolean;
     ShowPauseVideoButton?: boolean;
