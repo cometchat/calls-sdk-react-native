@@ -1,6 +1,6 @@
 {
   "name": "@cometchat/calls-sdk-react-native",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "Cometchat React Native Calling component for iOS and Android",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -29,13 +29,10 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/github_account/react-native-react-native-cometchat-rtc",
-  "author": "cometchat <engineering.pro@cometchat.com> (https://github.com/cometchat-pro)",
+  "repository": "https://github.com/cometchat/calls-sdk-react-native",
+  "author": "Cometchat Team (https://cometchat.com)",
   "license": "https://www.cometchat.com/legal-terms-of-service",
-  "bugs": {
-    "url": "https://github.com/github_account/react-native-react-native-cometchat-rtc/issues"
-  },
-  "homepage": "https://github.com/github_account/react-native-react-native-cometchat-rtc#readme",
+  "homepage": "https://www.cometchat.com/docs/sdk/react-native/calling-overview",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

@@ -1,27 +1,31 @@
-<div style="width:100%">
-<div style="width:100%">
-	<div style="width:50%; display:inline-block">
-    <a href="https://www.cometchat.com/">
-		<p align="center">
-		<img style="text-align:center" width="180" height="180" alt="" src="https://avatars2.githubusercontent.com/u/45484907?s=200&v=4">	
-		</p>	
-    </a>
-	</div>	
-</div>
-</br>
-</br>
-</div>
+<p align="center">
+  <img alt="CometChat" src="https://assets.cometchat.io/website/images/logos/banner.png">
+</p>
+
 
 # CometChat React Native Calls SDK
 
-CometChat Pro enables you to add voice, video & text chat for your website & app.
+CometChat enables you to add voice, video & text chat for your website & app.
+___
 
-📝 Please refer to our [Developer Documentation](https://www.cometchat.com/docs/home/welcome) for more information on how to configure the CometChat Pro SDK and implement various features using the same.
+## Prerequisites :star:
 
-<hr/>
+Before starting, ensure you have set up your React Native development environment correctly by following the guide at https://reactnative.dev/docs/environment-setup
 
-## Contact :mailbox:
+___
 
-Contact us via real time support present in [CometChat Dashboard.](https://app.cometchat.io/)
+## Setting up React Native Calls SDK
+Follow the official React Native Calls SDK setup guide in our documentation:
+https://www.cometchat.com/docs/sdk/react-native/overview
 
-<hr/>
+---
+
+## Checkout our sample apps
+Explore our React Native sample apps & UI Kit examples here:
+https://github.com/cometchat/cometchat-uikit-react-native/tree/v5/examples
+
+---
+
+
+## Help and Support
+For issues running the project or integrating with our UI Kits, consult our [documentation](https://www.cometchat.com/docs) or create a [support ticket](https://help.cometchat.com/hc/en-us) or seek real-time support via the [CometChat Dashboard](https://app.cometchat.com/).
