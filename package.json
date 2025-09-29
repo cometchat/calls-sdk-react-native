@@ -1,6 +1,6 @@
 {
   "name": "@cometchat/calls-sdk-react-native",
-  "version": "4.2.2",
+  "version": "4.3.0",
   "description": "Cometchat React Native Calling component for iOS and Android",
   "main": "dist/index.js",
   "module": "dist/index.js",
