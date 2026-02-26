@@ -6,8 +6,6 @@
 
 The CometChat Calls SDK enables real-time voice and video calling capabilities in your React Native application. Built on top of WebRTC, it provides a complete calling solution with built-in UI components and extensive customization options.
 
-[![npm version](https://img.shields.io/npm/v/@cometchat/calls-sdk-react-native)](https://www.npmjs.com/package/@cometchat/calls-sdk-react-native)
-
 <p align="center">
   <img src="https://raw.githubusercontent.com/cometchat/calls-sdk-react-native/v5/screenshots/showcase-1.png" alt="Mobile Screenshot 1" width="30%">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/cometchat/calls-sdk-react-native/v5/screenshots/showcase-2.png" alt="Mobile Screenshot 2" width="30%">&nbsp;&nbsp;
@@ -24,6 +22,8 @@ The CometChat Calls SDK enables real-time voice and video calling capabilities i
 - Active speaker detection
 
 ## Installation
+
+[![npm version](https://img.shields.io/npm/v/@cometchat/calls-sdk-react-native)](https://www.npmjs.com/package/@cometchat/calls-sdk-react-native)
 
 ```bash
 npm install @cometchat/calls-sdk-react-native
