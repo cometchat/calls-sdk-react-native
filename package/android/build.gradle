@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+
+android {
+    namespace "com.cometchat.calls"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+        }
+    }
+}
+
+dependencies {
+    implementation "com.facebook.react:react-native:+"
+}
