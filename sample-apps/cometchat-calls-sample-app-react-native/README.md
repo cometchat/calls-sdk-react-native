@@ -1,97 +1,75 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting Started
+<p align="center">
+  <img alt="CometChat" src="https://assets.cometchat.io/website/images/logos/banner.png">
+</p>
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+# React Native Calls Sample App by CometChat
 
-## Step 1: Start Metro
+This is a reference application showcasing the integration of [CometChat's React Native Calls SDK](https://www.cometchat.com/docs/sdk/react-native/calling-overview) in a React Native project. It demonstrates how to implement real-time voice and video calling features with ease.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+<p align="center">
+  <img src="../../screenshots/showcase-1.png" alt="Mobile Screenshot 1" width="30%">&nbsp;&nbsp;
+  <img src="../../screenshots/showcase-2.png" alt="Mobile Screenshot 2" width="30%">&nbsp;&nbsp;
+  <img src="../../screenshots/showcase-3.png" alt="Mobile Screenshot 3" width="30%">
+</p>
 
-To start the Metro dev server, run the following command from the root of your React Native project:
 
-```sh
-# Using npm
-npm start
+## Prerequisites
 
-# OR using Yarn
-yarn start
-```
+Sign up for a [CometChat](https://app.cometchat.com/) account to obtain your app credentials: _`App ID`_, _`Region`_, and _`Auth Key`_
 
-## Step 2: Build and run your app
+- **Node.js** 18 or higher
+- **React Native** Version 0.77 or later (up to the latest version)
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+**iOS**
+- Xcode
+- Pod (CocoaPods) for iOS
+- An iOS device or emulator with iOS 12.0 or above.
 
-### Android
+**Android**
+- Android Studio
+- Android device or emulator with Android version 5.0 or above.
 
-```sh
-# Using npm
-npm run android
 
-# OR using Yarn
-yarn android
-```
+## Installation
 
-### iOS
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/cometchat/calls-sdk-react-native.git
+   ```
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+1. Change into the sample app's directory:
+   ```sh
+   cd sample-apps/cometchat-calls-sample-app-react-native
+   ```
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+1. Run `npm install` to install the dependencies.
 
-```sh
-bundle install
-```
+1. `[Optional]` Configure CometChat credentials:
+    - Open the `useAppStore.ts` file located at `src/store/useAppStore.ts` and enter your CometChat _`appId`_, _`region`_, and _`authKey`_:
+      ```ts
+      const initialState: AppState = {
+        appId: 'YOUR_APP_ID',
+        authKey: 'YOUR_AUTH_KEY',
+        region: 'YOUR_REGION',
+      };
+      ```
+    - Alternatively, you can enter your credentials on first launch via the in-app credentials screen.
 
-Then, and every time you update your native dependencies, run:
+1. For iOS, install dependencies after navigating to ios:
+   ```sh
+   cd ios
+   pod install
+   ```
 
-```sh
-bundle exec pod install
-```
+1. Run the app on a device or emulator from the sample app root.
+   ```sh
+   npm start
+   npm run android
+   npm run ios
+   ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
 
-```sh
-# Using npm
-npm run ios
+## Help and Support
 
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+For issues running the project or integrating with our UI Kits, consult our [documentation](https://www.cometchat.com/docs/sdk/react-native/calling-overview) or create a [support ticket](https://help.cometchat.com/hc/en-us). You can also access real-time support via the [CometChat Dashboard](http://app.cometchat.com/).
