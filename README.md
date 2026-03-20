@@ -28,7 +28,7 @@ To set up the CometChat Calls SDK and utilize CometChat for your calling functio
 npm install @cometchat/calls-sdk-react-native
 ```
 
-For the full setup guide including platform-specific configuration, refer to our [official documentation](https://www.cometchat.com/docs/sdk/react-native/calling-overview).
+For the full setup guide including platform-specific configuration, refer to our [official documentation](https://www.cometchat.com/docs/calls/react-native/overview).
 
 ## 🚀 Explore the Sample App
 
