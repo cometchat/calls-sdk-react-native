@@ -1,6 +1,6 @@
 {
   "name": "@cometchat/calls-sdk-react-native",
-  "version": "5.0.0-beta.3",
+  "version": "5.0.1",
   "description": "CometChat Calls SDK for React Native provides voice and video calling capabilities for React Native applications.",
   "private": false,
   "main": "dist/index.js",
