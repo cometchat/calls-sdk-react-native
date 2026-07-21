@@ -25,6 +25,7 @@ import android.os.Build;
 import com.cometchat.calls.utils.CometChatLogger;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -81,6 +82,8 @@ import java.util.Set;
              for (AudioDeviceInfo info: deviceInfos) {
                  switch (info.getType()) {
                      case AudioDeviceInfo.TYPE_BLUETOOTH_SCO:
+                     case AudioDeviceInfo.TYPE_BLE_HEADSET:
+                     case AudioDeviceInfo.TYPE_BLE_SPEAKER:
                          devices.add(AudioModeModule.DEVICE_BLUETOOTH);
                          break;
                      case AudioDeviceInfo.TYPE_BUILTIN_EARPIECE:
@@ -171,6 +174,58 @@ import java.util.Set;
      }
 
      /**
+      * Returns the {@link AudioDeviceInfo} types that can satisfy the given
+      * "DEVICE_" constant, in order of preference.
+      */
+     private static int[] communicationDeviceTypes(String device) {
+         switch (device) {
+             case AudioModeModule.DEVICE_SPEAKER:
+                 return new int[] { AudioDeviceInfo.TYPE_BUILTIN_SPEAKER };
+             case AudioModeModule.DEVICE_EARPIECE:
+                 return new int[] { AudioDeviceInfo.TYPE_BUILTIN_EARPIECE };
+             case AudioModeModule.DEVICE_BLUETOOTH:
+                 return new int[] {
+                     AudioDeviceInfo.TYPE_BLUETOOTH_SCO,
+                     AudioDeviceInfo.TYPE_BLE_HEADSET,
+                     AudioDeviceInfo.TYPE_BLE_SPEAKER
+                 };
+             case AudioModeModule.DEVICE_HEADPHONES:
+                 return new int[] {
+                     AudioDeviceInfo.TYPE_WIRED_HEADSET,
+                     AudioDeviceInfo.TYPE_WIRED_HEADPHONES,
+                     TYPE_USB_HEADSET,
+                     TYPE_HEARING_AID
+                 };
+             default:
+                 return new int[0];
+         }
+     }
+
+     /**
+      * Sets the audio route using the modern (API 31+) communication device
+      * API. Unlike the deprecated setSpeakerphoneOn() / startBluetoothSco()
+      * calls, a setCommunicationDevice() request participates in the system's
+      * per-client route arbitration and takes precedence over stale requests
+      * left behind by other libraries in the same app.
+      */
+     private void setCommunicationRoute(String device) {
+         List<AudioDeviceInfo> availableDevices = audioManager.getAvailableCommunicationDevices();
+
+         for (int type : communicationDeviceTypes(device)) {
+             for (AudioDeviceInfo info : availableDevices) {
+                 if (info.getType() == type) {
+                     if (audioManager.setCommunicationDevice(info)) {
+                         return;
+                     }
+                     CometChatLogger.w(TAG, "setCommunicationDevice failed for type: " + type);
+                 }
+             }
+         }
+
+         CometChatLogger.w(TAG, "No available communication device for: " + device);
+     }
+
+     /**
       * Helper method to set the output route to a Bluetooth device.
       *
       * @param enabled true if Bluetooth should use used, false otherwise.
@@ -205,6 +260,11 @@ import java.util.Set;
 
      @Override
      public void setAudioRoute(String device) {
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+             setCommunicationRoute(device);
+             return;
+         }
+
          // Turn speaker on / off
          audioManager.setSpeakerphoneOn(device.equals(AudioModeModule.DEVICE_SPEAKER));
 
@@ -218,8 +278,12 @@ import java.util.Set;
              audioFocusLost = false;
              audioManager.setMode(AudioManager.MODE_NORMAL);
              audioManager.abandonAudioFocus(this);
-             audioManager.setSpeakerphoneOn(false);
-             setBluetoothAudioRoute(false);
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                 audioManager.clearCommunicationDevice();
+             } else {
+                 audioManager.setSpeakerphoneOn(false);
+                 setBluetoothAudioRoute(false);
+             }
 
              return true;
          }

@@ -1,6 +1,6 @@
 {
   "name": "@cometchat/calls-sdk-react-native",
-  "version": "5.0.1",
+  "version": "5.0.3",
   "description": "CometChat Calls SDK for React Native provides voice and video calling capabilities for React Native applications.",
   "private": false,
   "main": "dist/index.js",
@@ -13,17 +13,17 @@
     "cometchat-calls-sdk-react-native.podspec"
   ],
   "scripts": {},
-  "dependencies": {},
-  "devDependencies": {},
-  "peerDependencies": {
+  "dependencies": {
     "@xmldom/xmldom": "^0.8.11",
     "abab": "^2.0.6",
-    "clsx": "^2.1.1",
     "promise.allsettled": "^1.0.7",
     "text-encoding": "^0.7.0",
     "valibot": "^1.2.0",
-    "lib-jitsi-meet": "https://github.com/jitsi/lib-jitsi-meet/releases/download/v1790.0.0+311766e3/lib-jitsi-meet.tgz"
+    "@cometchat/calls-lib-webrtc": "https://dl.cloudsmith.io/public/cometchat/cometchat/raw/files/cometchat-calls-lib-webrtc-346a46ff.tgz",
+    "zustand": "^5.0.4"
   },
+  "devDependencies": {},
+  "peerDependencies": {},
   "engines": {
     "node": ">=18"
   },

@@ -23,7 +23,6 @@ public class MyAppPackage implements ReactPackage {
 
         modules.add(new AudioModeModule(reactContext));
         modules.add(new KeepAwakeModule(reactContext));
-        modules.add(new ToastModule(reactContext));
 
         if (AudioModeModule.useConnectionService()) {
             modules.add(new RNConnectionService(reactContext));

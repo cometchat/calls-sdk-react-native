@@ -1,5 +1,5 @@
 PODS:
-  - cometchat-calls-sdk-react-native (5.0.1):
+  - cometchat-calls-sdk-react-native (5.0.3):
     - React-Core
     - react-native-webrtc
   - FBLazyVector (0.84.0)
@@ -2205,7 +2205,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  cometchat-calls-sdk-react-native: afdff818559a9b29a1099712398559e17a1182b2
+  cometchat-calls-sdk-react-native: aa62215127a5bfd7df3139a99c35ddadcfeb6304
   FBLazyVector: c12d2108050e27952983d565a232f6f7b1ad5e69
   hermes-engine: c0e5e877f3605cebc46c26d0df52abd849f07df5
   JitsiWebRTC: b47805ab5668be38e7ee60e2258f49badfe8e1d0

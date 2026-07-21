@@ -20,7 +20,35 @@
 
 @interface CometChatAudioSession : NSObject
 
+/**
+ * Enables or disables manual audio session management, for use with CallKit.
+ *
+ * When enabled, WebRTC no longer activates the audio session on its own:
+ * audio stays disabled (`isAudioEnabled == NO`) until the system activates
+ * the audio session and `activateWithAudioSession:` is called from
+ * `CXProviderDelegate`'s `provider:didActivateAudioSession:`.
+ *
+ * Enable this before reporting the call to CallKit (before requesting the
+ * `CXStartCallAction`/`CXAnswerCallAction`), and disable it when the call
+ * ends so that non-CallKit calls keep working.
+ */
++ (void)setUseManualAudio:(BOOL)useManualAudio;
+
+/**
+ * Whether manual audio session management is currently enabled.
+ */
++ (BOOL)useManualAudio;
+
+/**
+ * Call from `CXProviderDelegate`'s `provider:didActivateAudioSession:`.
+ * Hands the CallKit-activated session over to WebRTC and enables audio.
+ */
 + (void)activateWithAudioSession:(AVAudioSession *)session;
+
+/**
+ * Call from `CXProviderDelegate`'s `provider:didDeactivateAudioSession:`.
+ * Disables audio and notifies WebRTC that the session was deactivated.
+ */
 + (void)deactivateWithAudioSession:(AVAudioSession *)session;
 
 @end
