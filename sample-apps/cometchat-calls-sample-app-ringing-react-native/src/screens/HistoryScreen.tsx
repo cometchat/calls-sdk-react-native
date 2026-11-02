@@ -13,7 +13,7 @@ function peerOf(log: Log, me?: string) {
   const receiver: any = log.getReceiver();
   const initiator: any = log.getInitiator();
   if (log.getReceiverType() === 'group') {
-    return { id: receiver.getGuid?.() ?? '', name: receiver.getName?.() ?? 'Group', avatar: receiver.getIcon?.() };
+    return { id: receiver?.getGuid?.() ?? '', name: receiver?.getName?.() ?? 'Group', avatar: receiver?.getIcon?.() };
   }
   const other = initiator?.getUid?.() === me ? receiver : initiator;
   return { id: other?.getUid?.() ?? '', name: other?.getName?.() ?? 'Unknown', avatar: other?.getAvatar?.() };
@@ -52,7 +52,7 @@ function Details({ log, onBack }: { log: Log; onBack: () => void }) {
         </Text>
       </View>
       <Text style={{ color: theme.textSecondary, fontWeight: '600' }}>Participants</Text>
-      {log.getParticipants().map((participant: any, index) => (
+      {(log.getParticipants() ?? []).map((participant: any, index) => (
         <Text key={participant.getUid?.() ?? index} style={{ color: theme.text }}>
           {participant.getName?.() ?? participant.getUid?.()}
         </Text>
