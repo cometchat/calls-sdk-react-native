@@ -141,6 +141,8 @@ export function useOutgoingCall(request: OutgoingRequest) {
         // without this comes up with no camera.
         sessionSettings: {
           sessionType: request.callType === 'video' ? 'VIDEO' : 'VOICE',
+          // A 1:1 call ends for both people when either one leaves.
+          isPeerCall: request.receiverType === 'user',
         },
       });
       if (error || !data) {
