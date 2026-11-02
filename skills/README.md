@@ -20,7 +20,8 @@ cp -r skills/ /path/to/your/project/skills/
 |-------|-------------|
 | `setup` | SDK install, init, login, permissions, Info.plist, AndroidManifest |
 | `join-session` | CometChatCalls.Component, callToken, sessionSettings, voice vs video |
-| `ringing-integration` | Dual SDK (Chat + Calls), initiateCall, accept/reject/cancel, incoming/outgoing |
+| `ringing-integration` | Calls SDK ringing: initiateCall, connect, endCall, Calling and Ringing states, cancel, no-answer, group ringing |
+| `voip-calling` | Push Notifications SDK 2.0: FCM, APNs, PushKit, CallKit, the Android ringing screen, answering, decline, logout |
 | `session-settings` | All SessionSettings options: layouts, session type, hide buttons, idle timeout |
 | `event-listeners` | addEventListener for session, participant, media, button, layout, mobile-specific events |
 
@@ -47,8 +48,9 @@ Each skill has a `description` field in its YAML frontmatter that lists trigger 
 
 ## Compatibility
 
-- CometChat Calls SDK v5 (`@cometchat/calls-sdk-react-native@latest`)
-- CometChat Chat SDK v4 (`@cometchat/chat-sdk-react-native@latest`) — required for ringing
+- CometChat Calls SDK v5 (`@cometchat/calls-sdk-react-native@latest`); ringing needs 5.1+
+- CometChat Chat SDK v4 (`@cometchat/chat-sdk-react-native@latest`)
+- CometChat Push Notifications SDK 2.0 (`@cometchat/push-notifications-voip-react-native`), for ringing, used by the ringing sample for users and groups
 - React Native 0.72+
 - iOS 13+, Android 8.0+ (API 26+)
 - Works with: Kiro, Claude Code, Cursor, Copilot, and other AI coding assistants that support the skills ecosystem
