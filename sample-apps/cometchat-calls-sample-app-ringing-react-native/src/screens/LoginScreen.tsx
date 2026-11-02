@@ -36,7 +36,7 @@ export default function LoginScreen({ onEditCredentials }: { onEditCredentials: 
       await initSDKs(credentials);
       await login(value.trim(), credentials);
     } catch (e: any) {
-      setError(e?.message ?? 'Could not log in');
+      setError(e?.errorDescription ?? e?.message ?? 'Could not log in');
       setBusy(false);
     }
   };

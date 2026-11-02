@@ -79,7 +79,7 @@ function Login({ onNavigate }: LoginProps) {
         });
       })
       .catch(error => {
-        Alert.alert('Login failed', error?.message ?? String(error));
+        Alert.alert('Login failed', error?.errorDescription ?? String(error));
       });
   };
 
