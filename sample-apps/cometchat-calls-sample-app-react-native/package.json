@@ -11,14 +11,14 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\""
   },
   "dependencies": {
-    "@cometchat/calls-sdk-react-native": "^5.1.0",
+    "@cometchat/calls-sdk-react-native": "5.1.0",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "react": "19.2.3",
     "react-native": "0.84.0",
     "react-native-background-timer": "^2.4.1",
     "react-native-performance": "^5.1.2",
     "react-native-safe-area-context": "^5.5.2",
-    "react-native-svg": "^15.12.0",
+    "react-native-svg": "^15.16.0",
     "react-native-url-polyfill": "2.0.0",
     "react-native-webrtc": "155.0.1",
     "zustand": "^5.0.11"
