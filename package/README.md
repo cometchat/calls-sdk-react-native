@@ -12,7 +12,6 @@ The CometChat Calls SDK enables real-time voice and video calling capabilities i
   <img src="https://raw.githubusercontent.com/cometchat/calls-sdk-react-native/v5/screenshots/showcase-3.png" alt="Mobile Screenshot 3" width="30%">
 </p>
 
-
 ## Features
 
 - 1:1 and group voice/video calls
@@ -25,8 +24,16 @@ The CometChat Calls SDK enables real-time voice and video calling capabilities i
 
 [![npm version](https://img.shields.io/npm/v/@cometchat/calls-sdk-react-native)](https://www.npmjs.com/package/@cometchat/calls-sdk-react-native)
 
+Install the SDK and its peer dependencies. Version 5.1 requires `react-native-webrtc` 155.
+
 ```bash
-npm install @cometchat/calls-sdk-react-native
+npm install @cometchat/calls-sdk-react-native react-native-webrtc@^155.0.1 @react-native-async-storage/async-storage react-native-background-timer react-native-performance react-native-svg react-native-url-polyfill
+```
+
+On iOS, install the pods as well:
+
+```bash
+cd ios && pod install
 ```
 
 For the complete setup guide including platform-specific configuration, refer to our [official documentation](https://www.cometchat.com/docs/calls/react-native/overview).

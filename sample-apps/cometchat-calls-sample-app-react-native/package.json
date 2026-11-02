@@ -1,6 +1,6 @@
 {
   "name": "com.cometchat.calls.sampleapp.reactnative",
-  "version": "5.0.5",
+  "version": "5.1.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -11,7 +11,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\""
   },
   "dependencies": {
-    "@cometchat/calls-sdk-react-native": "^5.0.5",
+    "@cometchat/calls-sdk-react-native": "^5.1.0",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "react": "19.2.3",
     "react-native": "0.84.0",
@@ -20,7 +20,7 @@
     "react-native-safe-area-context": "^5.5.2",
     "react-native-svg": "^15.12.0",
     "react-native-url-polyfill": "2.0.0",
-    "react-native-webrtc": "124.0.7",
+    "react-native-webrtc": "155.0.1",
     "zustand": "^5.0.11"
   },
   "devDependencies": {

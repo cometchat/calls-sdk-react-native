@@ -35,6 +35,7 @@ For the full setup guide including platform-specific configuration, refer to our
 Dive straight into our sample app to see the CometChat Calls SDK in action.
 
 - [React Native CLI Sample App](sample-apps/cometchat-calls-sample-app-react-native#readme)
+- [Ringing Sample App](sample-apps/cometchat-calls-sample-app-ringing-react-native#readme): 1:1 and group ringing calls with the Calls SDK and the Push Notifications SDK
 
 ---
 
