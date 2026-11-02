@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   View,
   Text,
@@ -58,6 +59,7 @@ interface LoginProps {
 
 function Login({ onNavigate }: LoginProps) {
   const [uidInput, setUidInput] = useState('cometchat-uid-1');
+  const [loggingIn, setLoggingIn] = useState(false);
   const { user, setUser } = useAppStore();
 
   useEffect(() => {
@@ -67,9 +69,10 @@ function Login({ onNavigate }: LoginProps) {
   }, [user]);
 
   const handleLogin = () => {
-    if (!uidInput.trim()) {
+    if (!uidInput.trim() || loggingIn) {
       return;
     }
+    setLoggingIn(true);
     CometChatCalls.login(uidInput)
       .then(loggedInUser => {
         setUser({
@@ -80,13 +83,17 @@ function Login({ onNavigate }: LoginProps) {
       })
       .catch(error => {
         Alert.alert('Login failed', error?.errorDescription ?? String(error));
-      });
+      })
+      .finally(() => setLoggingIn(false));
   };
 
   const rows = [sampleUsers.slice(0, 3), sampleUsers.slice(3, 5)];
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+    >
       <CometChatLogo />
 
       <View style={styles.form}>
@@ -162,9 +169,14 @@ function Login({ onNavigate }: LoginProps) {
             <TouchableOpacity
               style={styles.loginButton}
               activeOpacity={0.7}
+              disabled={loggingIn}
               onPress={handleLogin}
             >
-              <Text style={styles.loginButtonText}>Login</Text>
+              {loggingIn ? (
+                <ActivityIndicator color="#FFFFFF" />
+              ) : (
+                <Text style={styles.loginButtonText}>Login</Text>
+              )}
             </TouchableOpacity>
             <TouchableOpacity onPress={() => onNavigate('Credentials')}>
               <Text style={styles.credentialsLink}>

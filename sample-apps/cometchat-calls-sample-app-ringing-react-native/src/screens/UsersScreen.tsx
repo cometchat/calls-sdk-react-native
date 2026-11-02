@@ -83,6 +83,7 @@ export default function UsersScreen() {
         <Field label="Search" value={search} onChangeText={setSearch} />
       </View>
       <FlatList
+        keyboardShouldPersistTaps="handled"
         data={users}
         keyExtractor={user => user.getUid()}
         onEndReached={loadMore}
