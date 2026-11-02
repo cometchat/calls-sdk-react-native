@@ -1,146 +1,164 @@
 ---
 name: ringing-integration
-description: Implement ringing with dual SDK (Chat + Calls). Use when adding incoming/outgoing call screens, CometChat.initiateCall, accept/reject/cancel calls, or integrating Chat SDK signaling with Calls SDK sessions. Triggers on "ringing", "incoming call", "outgoing call", "initiateCall", "acceptCall", "rejectCall".
+description: Implement ringing with the Calls SDK and the Push Notifications SDK. Use when adding outgoing or incoming calls, CometChatCalls.initiateCall, connect, endCall, "Calling…" and "Ringing…" states, cancel, decline, no-answer timeouts, or group ringing, or when replacing CometChat.initiateCall, acceptCall or rejectCall from the Chat SDK.
 inclusion: manual
 ---
 
-# CometChat Calls SDK v5 — Ringing Integration (React Native)
+# CometChat Calls SDK v5.1 — Ringing Integration (React Native)
 
 ## Overview
 
-Implement call ringing using both CometChat Chat SDK (signaling) and Calls SDK (session). The Chat SDK handles initiating, accepting, rejecting, and cancelling calls. The Calls SDK manages the actual call session after acceptance.
+Two SDKs do the work:
 
-## Key Imports
+| SDK | Owns |
+|-----|------|
+| Calls SDK (`@cometchat/calls-sdk-react-native` 5.1+) | Creating the call, the media session, cancelling and ending it |
+| Push Notifications SDK, VoIP package (`@cometchat/push-notifications-voip-react-native` 2.0+) | Ringing the callee's device, answering and declining. See the `voip-calling` skill |
 
-```typescript
-// Chat SDK — signaling
-import { CometChat } from '@cometchat/chat-sdk-react-native';
+The Chat SDK's calling methods (`CometChat.initiateCall`, `acceptCall`, `rejectCall`, `endCall`, `CallListener`) belong to the earlier flow. Do not mix them with this one.
 
-// Calls SDK — session
+| Stage | Caller | Callee |
+|-------|--------|--------|
+| Call created | `initiateCall` resolves; show "Calling…" | Push arrives; the Push SDK rings |
+| Callee's device reached | `onParticipantConnected`; show "Ringing…" | Ringing |
+| Callee answers | `onParticipantJoined`; mount the call component | `onCallAccepted`; mount the call component |
+| Declined, busy, no answer | `onCallEnded` with `rejected`, `busy` or `unanswered` | Ring stops |
+| Caller cancels | You ended it | Ring stops |
+
+## Prerequisites
+
+- Calls SDK set up and the user logged in (`setup` skill).
+- Push configured (`voip-calling` skill).
+- `react-native-webrtc` `^155.0.1`.
+- `NSMicrophoneUsageDescription` and `NSCameraUsageDescription` in `Info.plist`. Without the microphone string the system terminates the app mid-ring.
+
+## 1. Start a call
+
+Every Calls SDK method that can fail resolves to `{ data, error }`. Check `error` first.
+
+```ts
 import { CometChatCalls } from '@cometchat/calls-sdk-react-native';
+
+const { data: call, error } = await CometChatCalls.initiateCall(receiverId, {
+  type: 'video',          // or 'audio'
+  receiverType: 'user',   // or 'group' to ring every member
+  sessionSettings: { sessionType: 'VIDEO' }, // 'VOICE' for an audio call
+});
+if (error) {
+  console.warn('Could not start the call', error);
+  return;
+}
 ```
 
-## Implementation
+Always set `sessionType`, in capitals. The settings freeze when the session is prepared, and settings passed to the component later are ignored.
 
-### 1. Initiate a Call (Caller Side)
+`initiateCall` resolves while the prepare is still in flight. A failed prepare is not fatal: joining still works.
 
-```typescript
-const call = new CometChat.Call(
-  receiverUID,
-  CometChat.RECEIVER_TYPE.USER,
-  CometChat.CALL_TYPE.VIDEO
-);
+## 2. Show "Ringing…" and detect the answer
 
-const outgoingCall = await CometChat.initiateCall(call);
-// Show outgoing call UI with outgoingCall.getSessionId()
+The caller stays on the prepared session and does not join until the callee has joined.
+
+```ts
+const session = CometChatCalls.getActiveSession();
+const me = CometChatCalls.getLoggedInUser()?.uid;
+
+const offs = [
+  session.addEventListener('onParticipantConnected', participant => {
+    if (participant.uid !== me) setStatus('Ringing…');
+  }),
+  session.addEventListener('onParticipantJoined', participant => {
+    if (participant.uid !== me) openCallScreen(call.sessionId);
+  }),
+  session.addEventListener('onConnectionClosed', closeOutgoingScreen),
+];
+// When the screen goes away: offs.forEach(off => off());
 ```
 
-### 2. Listen for Incoming Calls
+`onParticipantConnected` only fires when the call reached the callee by push. A callee who got it over the websocket with the app open makes no pre-join, so the caller stays on "Calling…". Treat "Ringing…" as a nicety and never as a condition.
 
-```typescript
-const listenerID = 'CALL_LISTENER';
+## 3. Learn the outcome
 
-CometChat.addCallListener(listenerID, new CometChat.CallListener({
-  onIncomingCallReceived: (call) => {
-    // Show incoming call UI
-    // call.getSessionId(), call.getSender().getName(), call.getType()
-  },
-  onOutgoingCallAccepted: (call) => {
-    // Navigate to call screen
-    navigateToCall(call.getSessionId(), call.getType());
-  },
-  onOutgoingCallRejected: (call) => {
-    // Dismiss outgoing call UI
-  },
-  onIncomingCallCancelled: (call) => {
-    // Dismiss incoming call UI
-  },
-}));
+```ts
+import { CometChatVoipNotifications } from '@cometchat/push-notifications-voip-react-native';
 
-// Remove in cleanup
-CometChat.removeCallListener(listenerID);
+const off = CometChatVoipNotifications.onCallEnded(event => {
+  if (event.sessionId === call.sessionId) {
+    closeOutgoingScreen(event.reason); // rejected, busy, unanswered, cancelled
+  }
+});
 ```
 
-### 3. Accept a Call (Receiver Side)
+## 4. Cancel and time out
 
-```typescript
-const acceptedCall = await CometChat.acceptCall(sessionId);
-navigateToCall(acceptedCall.getSessionId(), acceptedCall.getType());
+```ts
+await CometChatCalls.endCall(call.sessionId, 'cancelled');
 ```
 
-### 4. Reject a Call
+Disable the end button after the first tap, and ignore an `onParticipantJoined` that arrives after you cancelled: the cancel wins.
 
-```typescript
-await CometChat.rejectCall(sessionId, CometChat.CALL_STATUS.REJECTED);
+There is no client-side ring timeout. A caller that wants its screen to time out ends the call itself:
+
+```ts
+const timer = setTimeout(() => {
+  CometChatCalls.endCall(call.sessionId, 'unanswered');
+  closeOutgoingScreen();
+}, 45_000);
+// Clear it on answer, cancel and unmount.
 ```
 
-### 5. Cancel an Outgoing Call
+## 5. Report the outgoing call to CallKit (iOS)
 
-```typescript
-await CometChat.rejectCall(sessionId, CometChat.CALL_STATUS.CANCELLED);
+Without this CallKit does not own the audio session, so a cellular call can take the microphone. These are no-ops on Android.
+
+```ts
+CometChatVoipNotifications.reportOutgoingCall(call.sessionId, calleeName, hasVideo);
+// when the callee answers
+CometChatVoipNotifications.reportCallConnected(call.sessionId);
+// when it ends: required, or CallKit keeps the status bar and the audio session
+CometChatVoipNotifications.reportCallEnded(call.sessionId, 'remoteEnded');
 ```
 
-### 6. Call Screen Component
+## 6. Join the session
+
+Both sides join the same way. `connect` hands back the session already prepared for this call, without minting a second token.
 
 ```tsx
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { CometChatCalls } from '@cometchat/calls-sdk-react-native';
-
-function CallScreen({ sessionId, callType, onEnd }: {
-  sessionId: string;
-  callType: string;
-  onEnd: () => void;
-}) {
-  const [callToken, setCallToken] = useState<string | null>(null);
-  const isVoice = callType === CometChat.CALL_TYPE.AUDIO;
+function CallScreen({ sessionId, callType, onEnd }) {
+  const [callToken, setCallToken] = useState(null);
 
   useEffect(() => {
-    CometChatCalls.generateToken(sessionId).then(({ token }) => {
-      setCallToken(token);
-    });
-  }, [sessionId]);
+    const offs = [];
+    let unmounted = false;
+    (async () => {
+      const session = await CometChatCalls.connect(sessionId, {
+        sessionType: callType === 'video' ? 'VIDEO' : 'VOICE',
+      });
+      if (unmounted) return;
+      setCallToken(session.callToken);
+      offs.push(session.addEventListener('onSessionLeft', onEnd));
+      offs.push(session.addEventListener('onConnectionClosed', onEnd));
+    })();
+    return () => {
+      unmounted = true;
+      offs.forEach(off => off());
+    };
+  }, [sessionId, callType, onEnd]);
 
-  useEffect(() => {
-    const unsub = CometChatCalls.addEventListener('onConnectionClosed', onEnd);
-    return () => unsub();
-  }, []);
-
-  if (!callToken) return null;
-
-  return (
-    <View style={styles.container}>
-      <CometChatCalls.Component
-        callToken={callToken}
-        sessionSettings={{
-          sessionType: isVoice ? 'VOICE' : 'VIDEO',
-          layout: isVoice ? 'SPOTLIGHT' : 'TILE',
-          startVideoPaused: isVoice,
-        }}
-      />
-    </View>
-  );
+  if (!callToken) return <Connecting />;
+  return <CometChatCalls.Component callToken={callToken} />;
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-});
 ```
 
-### 7. Handle Leave Button
+`CometChatCalls.Component` takes `callToken` or `sessionId`, and no event props. Subscribe on the session instead.
 
-```typescript
-CometChatCalls.addEventListener('onLeaveSessionButtonClicked', () => {
-  CometChatCalls.leaveSession();
-});
+## 7. End a call
+
+```ts
+await CometChatCalls.getActiveSession()?.leave();
 ```
 
-## Gotchas
+Use `session.leave()` rather than `CometChatCalls.leaveSession()`. It re-initialises the Calls SDK internally: wait for it to settle before preparing another session.
 
-- Cancel uses `CometChat.rejectCall()` with `CometChat.CALL_STATUS.CANCELLED` status
-- Call type constants: `CometChat.CALL_TYPE.VIDEO` and `CometChat.CALL_TYPE.AUDIO`
-- Remove call listeners on component unmount to prevent memory leaks
-- Initialize and login to **both** SDKs before using ringing
-- The Chat SDK handles signaling (ring/accept/reject); the Calls SDK handles the actual media session
-- `generateToken()` requires the Calls SDK user to be logged in
-- On React Native, consider using a push notification service (e.g., Firebase, APNs) for background call notifications
+## Reference
+
+See `sample-apps/cometchat-calls-sample-app-ringing-react-native`, in particular `src/calls/OutgoingCall.ts` and `src/calls/useOutgoingCall.ts`.

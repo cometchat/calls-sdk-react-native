@@ -5,6 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Keyboard,
+  Pressable,
 } from 'react-native';
 import { useAppStore, Region } from '../../store/useAppStore';
 import CometChatLogo from '../../components/CometChatLogo';
@@ -26,7 +28,11 @@ function Credentials({ onNavigate }: CredentialsProps) {
   const [authKey, setAuthKey] = useState('');
 
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={styles.container}
+      onPress={Keyboard.dismiss}
+      accessible={false}
+    >
       <CometChatLogo />
 
       <View style={styles.form}>
@@ -100,7 +106,7 @@ function Credentials({ onNavigate }: CredentialsProps) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

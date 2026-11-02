@@ -14,6 +14,20 @@ function App() {
   const credentials = useAppStore(state => state.credentials);
   const setUser = useAppStore(state => state.setUser);
   const clearUser = useAppStore(state => state.clearUser);
+  const [hydrated, setHydrated] = useState(useAppStore.persist.hasHydrated());
+
+  useEffect(
+    () => useAppStore.persist.onFinishHydration(() => setHydrated(true)),
+    [],
+  );
+
+  // Nothing can log in without credentials, so ask for them first. Saved
+  // credentials load asynchronously, so wait for them before deciding.
+  useEffect(() => {
+    if (hydrated && (!credentials.appId || !credentials.authKey)) {
+      setCurrentScreen('Credentials');
+    }
+  }, [hydrated, credentials]);
 
   useEffect(() => {
     const initCometChatCalls = async () => {
@@ -51,6 +65,10 @@ function App() {
   const handleNavigate = (screen: string) => {
     setCurrentScreen(screen as Screen);
   };
+
+  if (!hydrated) {
+    return null;
+  }
 
   return (
     <SafeAreaProvider>

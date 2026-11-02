@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Pressable,
+  Keyboard,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -30,10 +31,13 @@ function JoinSession({ onNavigate }: JoinSessionProps) {
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    const cleanup = CometChatCalls.addEventListener('onConnectionClosed', () => {
-      setInMeeting(false);
-      setCallToken(null);
-    });
+    const cleanup = CometChatCalls.addEventListener(
+      'onConnectionClosed',
+      () => {
+        setInMeeting(false);
+        setCallToken(null);
+      },
+    );
     return () => cleanup();
   }, []);
 
@@ -55,7 +59,11 @@ function JoinSession({ onNavigate }: JoinSessionProps) {
   }
 
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={styles.container}
+      onPress={Keyboard.dismiss}
+      accessible={false}
+    >
       <View
         style={[
           styles.avatarWrapper,
@@ -159,7 +167,7 @@ function JoinSession({ onNavigate }: JoinSessionProps) {
           )}
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
