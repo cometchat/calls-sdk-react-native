@@ -29,7 +29,7 @@ export default function CallScreen({ call }: { call: ActiveCall }) {
       }
       ended = true;
       // CallKit keeps its status bar up, and the signalling session stays busy, until told.
-      CometChatVoipNotifications.reportCallEnded(sessionId, 'ended');
+      CometChatVoipNotifications.reportCallEnded(sessionId, 'remoteEnded');
       CometChatVoipNotifications.endCallUI(sessionId);
       setActiveCall(null);
     };

@@ -51,7 +51,7 @@ export function useOutgoingCall(request: OutgoingRequest) {
       if (sessionId) {
         CometChatVoipNotifications.reportCallEnded(
           sessionId,
-          sendStatus === 'cancelled' ? 'cancelled' : 'ended',
+          sendStatus === 'cancelled' ? 'cancelled' : 'remoteEnded',
         );
         if (sendStatus) {
           CometChatCalls.endCall(sessionId, sendStatus).then(({ error }) => {

@@ -115,7 +115,7 @@ CometChatVoipNotifications.reportOutgoingCall(call.sessionId, calleeName, hasVid
 // when the callee answers
 CometChatVoipNotifications.reportCallConnected(call.sessionId);
 // when it ends: required, or CallKit keeps the status bar and the audio session
-CometChatVoipNotifications.reportCallEnded(call.sessionId, 'ended');
+CometChatVoipNotifications.reportCallEnded(call.sessionId, 'remoteEnded');
 ```
 
 ## 6. Join the session
