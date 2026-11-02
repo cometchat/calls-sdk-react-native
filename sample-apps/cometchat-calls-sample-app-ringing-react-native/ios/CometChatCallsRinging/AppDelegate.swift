@@ -7,10 +7,9 @@ import react_native_cometchat_push_notifications_voip
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-  var window: UIWindow?
-
   var reactNativeDelegate: ReactNativeDelegate?
   var reactNativeFactory: RCTReactNativeFactory?
+  var rootView: UIView?
 
   func application(
     _ application: UIApplication,
@@ -27,11 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // the call reaches CallKit within a few seconds. The package owns the PushKit registry.
     CometChatPushNotificationsAppDelegate.registerForVoIPPushes()
 
-    window = UIWindow(frame: UIScreen.main.bounds)
-
-    factory.startReactNative(
+    // Start React Native here, not when a scene connects: a VoIP push that wakes a killed app
+    // may launch it with no scene, and the ring's JavaScript still has to run.
+    rootView = factory.rootViewFactory.view(
       withModuleName: "CometChatCallsRinging",
-      in: window,
+      initialProperties: nil,
       launchOptions: launchOptions
     )
 
@@ -40,9 +39,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(
     _ application: UIApplication,
+    configurationForConnecting connectingSceneSession: UISceneSession,
+    options: UIScene.ConnectionOptions
+  ) -> UISceneConfiguration {
+    let configuration = UISceneConfiguration(
+      name: "Default Configuration",
+      sessionRole: connectingSceneSession.role
+    )
+    configuration.delegateClass = SceneDelegate.self
+    return configuration
+  }
+
+  func application(
+    _ application: UIApplication,
     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
   ) {
     CometChatPushNotificationsAppDelegate.didRegisterAPNsToken(deviceToken)
+  }
+}
+
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+  var window: UIWindow?
+
+  func scene(
+    _ scene: UIScene,
+    willConnectTo session: UISceneSession,
+    options connectionOptions: UIScene.ConnectionOptions
+  ) {
+    guard
+      let windowScene = scene as? UIWindowScene,
+      let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+      let rootView = appDelegate.rootView
+    else {
+      return
+    }
+
+    let viewController = UIViewController()
+    viewController.view = rootView
+
+    let window = UIWindow(windowScene: windowScene)
+    window.rootViewController = viewController
+    window.makeKeyAndVisible()
+    self.window = window
   }
 }
 
