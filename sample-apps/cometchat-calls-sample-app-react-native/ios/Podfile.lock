@@ -1,5 +1,5 @@
 PODS:
-  - cometchat-calls-sdk-react-native (5.0.5):
+  - cometchat-calls-sdk-react-native (5.0.6):
     - React-Core
     - react-native-webrtc
   - FBLazyVector (0.84.0)
