@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   View,
   Text,
   TextInput,
@@ -69,13 +70,17 @@ function Login({ onNavigate }: LoginProps) {
     if (!uidInput.trim()) {
       return;
     }
-    CometChatCalls.login(uidInput).then(loggedInUser => {
-      setUser({
-        uid: loggedInUser.uid,
-        name: loggedInUser.name,
-        avatar: loggedInUser.avatar,
+    CometChatCalls.login(uidInput)
+      .then(loggedInUser => {
+        setUser({
+          uid: loggedInUser.uid,
+          name: loggedInUser.name,
+          avatar: loggedInUser.avatar,
+        });
+      })
+      .catch(error => {
+        Alert.alert('Login failed', error?.message ?? String(error));
       });
-    });
   };
 
   const rows = [sampleUsers.slice(0, 3), sampleUsers.slice(3, 5)];
